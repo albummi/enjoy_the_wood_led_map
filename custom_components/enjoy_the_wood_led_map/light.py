@@ -57,18 +57,29 @@ class EnjoyTheWoodLedMapLight(LightEntity):
 
     async def async_turn_on(self, **kwargs):
         """Turn on the LED map."""
+        _LOGGER.debug("Turning on the LED map")
         self._state = True
         async with aiohttp.ClientSession() as session:
-            await session.get(f"http://{self._ip_address}/?cmd=on")
+            async with session.get(f"http://{self._ip_address}/?cmd=on") as response:
+                _LOGGER.debug(f"HTTP GET Response: {response.status}")
+                if response.status != 200:
+                    _LOGGER.error(f"Failed to turn on the LED map: {response.status}")
 
         if effect := kwargs.get("effect"):
             self._effect = effect
             async with aiohttp.ClientSession() as session:
-                await session.get(f"http://{self._ip_address}/?cmd={self._effect}")
+                async with session.get(f"http://{self._ip_address}/?cmd={effect}") as response:
+                    _LOGGER.debug(f"HTTP GET Response for effect {effect}: {response.status}")
+                    if response.status != 200:
+                        _LOGGER.error(f"Failed to set effect {effect}: {response.status}")
 
     async def async_turn_off(self, **kwargs):
         """Turn off the LED map."""
+        _LOGGER.debug("Turning off the LED map")
         self._state = False
         self._effect = None
         async with aiohttp.ClientSession() as session:
-            await session.get(f"http://{self._ip_address}/?cmd=off")
+            async with session.get(f"http://{self._ip_address}/?cmd=off") as response:
+                _LOGGER.debug(f"HTTP GET Response: {response.status}")
+                if response.status != 200:
+                    _LOGGER.error(f"Failed to turn off the LED map: {response.status}")
