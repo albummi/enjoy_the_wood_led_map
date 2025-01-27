@@ -1,10 +1,10 @@
 {
   "domain": "enjoy_the_wood_led_map",
   "name": "Enjoy the Wood LED Map",
+  "version": "1.0.0",
   "config_flow": true,
   "dependencies": [],
   "after_dependencies": [],
   "codeowners": ["@your_username"],
   "requirements": [],
-  "version": "1.0.0"
 }
