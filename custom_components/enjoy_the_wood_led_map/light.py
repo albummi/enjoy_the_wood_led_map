@@ -1,4 +1,4 @@
-from homeassistant.components.light import LightEntity  # Korrekt importieren
+from homeassistant.components.light import LightEntity
 import requests
 
 class EnjoyTheWoodLedMapLight(LightEntity):
