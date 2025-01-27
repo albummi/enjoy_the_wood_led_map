@@ -1,24 +1,21 @@
+import logging
 from homeassistant import config_entries
-import voluptuous as vol
+from homeassistant.core import HomeAssistant
 
-from .const import DOMAIN  # Importiere DOMAIN aus const.py
+_LOGGER = logging.getLogger(__name__)
 
-
-class EnjoyTheWoodLedMapConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Enjoy the Wood LED Map."""
-
-    VERSION = 1
+class EnjoyTheWoodConfigFlow(config_entries.ConfigFlow, domain="enjoy_the_wood_led_map"):
+    """Handle a config flow for Enjoy the Wood LED Map integration."""
 
     async def async_step_user(self, user_input=None):
-        """Handle the initial step."""
+        """Handle the user configuration input."""
         if user_input is not None:
-            # Optional: Du kannst hier die IP-Adresse validieren
-            return self.async_create_entry(title="Enjoy the Wood LED Map", data=user_input)
-
-        # Zeige ein Eingabeformular für den Benutzer
+            # Speichern der IP-Adresse in der Konfiguration
+            return self.async_create_entry(
+                title="Enjoy the Wood LED Map", data={"ip_address": user_input["ip_address"]}
+            )
+        
+        # Wenn noch keine Eingabe vorliegt, zeige das Formular
         return self.async_show_form(
-            step_id="user",
-            data_schema=vol.Schema({
-                vol.Required("ip_address"): str,  # Benutzer gibt die IP-Adresse der LED-Karte ein
-            })
+            step_id="user", data_schema=vol.Schema({vol.Required("ip_address"): str})
         )
