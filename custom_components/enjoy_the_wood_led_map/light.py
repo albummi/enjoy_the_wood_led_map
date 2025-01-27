@@ -1,8 +1,7 @@
 import logging
 import aiohttp
-from homeassistant.components.light import LightEntity
+from homeassistant.components.light import LightEntity, COLOR_MODE_ONOFF
 from homeassistant.const import CONF_IP_ADDRESS
-from homeassistant.const import ColorMode
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,12 +33,12 @@ class EnjoyTheWoodLedMapLight(LightEntity):
     @property
     def supported_color_modes(self):
         """Return the list of supported color modes."""
-        return {ColorMode.ONOFF}
+        return {COLOR_MODE_ONOFF}
 
     @property
     def color_mode(self):
         """Return the current color mode."""
-        return ColorMode.ONOFF
+        return COLOR_MODE_ONOFF
 
     @property
     def effect_list(self):
@@ -58,7 +57,7 @@ class EnjoyTheWoodLedMapLight(LightEntity):
 
     async def async_turn_on(self, **kwargs):
         """Turn on the LED map."""
-        _LOGGER.debug("Turning on the LED map")
+        _LOGGER.debug("Turning on the LED map with effects")
         self._state = True
         async with aiohttp.ClientSession() as session:
             async with session.get(f"http://{self._ip_address}/?cmd=on") as response:
