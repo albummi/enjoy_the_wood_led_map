@@ -1,6 +1,6 @@
 import logging
-import requests
-from homeassistant.components.light import LightEntity, COLOR_MODE_RGB
+import aiohttp
+from homeassistant.components.light import LightEntity, COLOR_MODE_ONOFF
 from homeassistant.const import CONF_IP_ADDRESS
 
 _LOGGER = logging.getLogger(__name__)
@@ -10,6 +10,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     ip_address = entry.data[CONF_IP_ADDRESS]
     async_add_entities([EnjoyTheWoodLedMapLight(ip_address)])
 
+
 class EnjoyTheWoodLedMapLight(LightEntity):
     """Representation of the Enjoy the Wood LED Map as a light entity."""
 
@@ -18,7 +19,6 @@ class EnjoyTheWoodLedMapLight(LightEntity):
         self._ip_address = ip_address
         self._state = False
         self._effect = None
-        self._color = None
 
     @property
     def name(self):
@@ -33,12 +33,12 @@ class EnjoyTheWoodLedMapLight(LightEntity):
     @property
     def supported_color_modes(self):
         """Return the list of supported color modes."""
-        return {COLOR_MODE_RGB}
+        return {COLOR_MODE_ONOFF}
 
     @property
     def color_mode(self):
         """Return the current color mode."""
-        return COLOR_MODE_RGB
+        return COLOR_MODE_ONOFF
 
     @property
     def effect_list(self):
@@ -58,19 +58,17 @@ class EnjoyTheWoodLedMapLight(LightEntity):
     async def async_turn_on(self, **kwargs):
         """Turn on the LED map."""
         self._state = True
-        requests.get(f"http://{self._ip_address}/?cmd=on")
+        async with aiohttp.ClientSession() as session:
+            await session.get(f"http://{self._ip_address}/?cmd=on")
 
-        if EFFECT := kwargs.get("effect"):
-            self._effect = EFFECT
-            requests.get(f"http://{self._ip_address}/?cmd={self._effect}")
-
-        if COLOR := kwargs.get("rgb_color"):
-            self._color = COLOR
-            # Handle color setting (depends on the LED map's capabilities)
+        if effect := kwargs.get("effect"):
+            self._effect = effect
+            async with aiohttp.ClientSession() as session:
+                await session.get(f"http://{self._ip_address}/?cmd={self._effect}")
 
     async def async_turn_off(self, **kwargs):
         """Turn off the LED map."""
         self._state = False
         self._effect = None
-        self._color = None
-        requests.get(f"http://{self._ip_address}/?cmd=off")
+        async with aiohttp.ClientSession() as session:
+            await session.get(f"http://{self._ip_address}/?cmd=off")
