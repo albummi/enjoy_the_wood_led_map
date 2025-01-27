@@ -1,5 +1,6 @@
 import logging
 from homeassistant import config_entries
+import voluptuous as vol
 from homeassistant.core import HomeAssistant
 
 _LOGGER = logging.getLogger(__name__)
