@@ -55,7 +55,7 @@ class EnjoyTheWoodLedMapLight(LightEntity):
         if EFFECT := kwargs.get("effect"):
             self._effect = EFFECT
             requests.get(f"http://{self._ip_address}/?cmd={self._effect}")
-        
+
         if COLOR := kwargs.get("rgb_color"):
             self._color = COLOR
             # Handle color setting (depends on the LED map's capabilities)
