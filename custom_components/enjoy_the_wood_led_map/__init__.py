@@ -10,10 +10,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEnt
     """Set up Enjoy the Wood LED Map from a config entry."""
     ip_address = entry.data.get("ip_address")
     
-    # Beispiel: Erstelle eine Instanz für das LED Map und füge sie hinzu
+    # Hier könnte eine Instanziierung deiner Entität erfolgen, die die IP-Adresse benötigt
+    # Beispiel: Es könnte ein Gerät für die Steuerung des LED Maps erstellt werden
     hass.data[DOMAIN] = EnjoyTheWoodLedMapLight(ip_address)
     
-    # Füge die Entität zu Home Assistant hinzu
-    await hass.helpers.entity_component.async_add_entities([hass.data[DOMAIN]])
+    # Die Entität zu Home Assistant hinzufügen
+    hass.helpers.entity_component.async_add_entities([hass.data[DOMAIN]])
 
     return True
