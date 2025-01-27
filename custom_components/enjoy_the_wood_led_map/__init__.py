@@ -3,6 +3,7 @@ from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from .light import EnjoyTheWoodLedMapLight
 from .const import DOMAIN
+from .config_flow import EnjoyTheWoodConfigFlow
 
 _LOGGER = logging.getLogger(__name__)
 
