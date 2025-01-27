@@ -1,13 +1,13 @@
 import logging
 import requests
 from homeassistant.components.light import LightEntity
-from homeassistant.const import CONF_IP_ADDRESS
+from homeassistant.const import CONF_IP_ADDRESS, ATTR_SUPPORTED_FEATURES, ATTR_SUPPORTED_COLOR_MODES, COLOR_MODE_RGB
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, entry, async_add_entities):
-    """Set up the Enjoy the Wood LED map as a light entity."""
+    """Set up the Enjoy the Wood LED Map as a light entity."""
     ip_address = entry.data[CONF_IP_ADDRESS]
     async_add_entities([EnjoyTheWoodLedMapLight(ip_address)])
 
@@ -25,12 +25,22 @@ class EnjoyTheWoodLedMapLight(LightEntity):
     @property
     def name(self):
         """Return the name of the light."""
-        return f"Enjoy the Wood LED Map"
+        return "Enjoy the Wood LED Map"
 
     @property
     def is_on(self):
         """Return if the LED map is on or off."""
         return self._state
+
+    @property
+    def supported_color_modes(self):
+        """Return the list of supported color modes."""
+        return {COLOR_MODE_RGB}
+
+    @property
+    def color_mode(self):
+        """Return the current color mode."""
+        return COLOR_MODE_RGB
 
     @property
     def effect_list(self):
