@@ -15,6 +15,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEnt
     hass.data[DOMAIN] = EnjoyTheWoodLedMapLight(ip_address)
     
     # Die Entität zu Home Assistant hinzufügen
-    hass.helpers.entity_component.async_add_entities([hass.data[DOMAIN]])
+    await hass.helpers.entity_component.async_add_entities([hass.data[DOMAIN]])
 
     return True
