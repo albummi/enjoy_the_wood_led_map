@@ -18,7 +18,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEnt
     hass.data[DOMAIN][entry.entry_id] = ip_address
 
     # Füge die Entität zu Home Assistant hinzu
-    await hass.config_entries.async_forward_entry_setup(entry, "light")
+    await hass.config_entries.async_forward_entry_setups(entry, ["light"])
 
     return True
 
