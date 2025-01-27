@@ -1,7 +1,8 @@
 import logging
 import requests
 from homeassistant.components.light import LightEntity
-from homeassistant.const import CONF_IP_ADDRESS, ATTR_SUPPORTED_FEATURES, ATTR_SUPPORTED_COLOR_MODES, COLOR_MODE_RGB
+from homeassistant.const import CONF_IP_ADDRESS, COLOR_MODE_RGB
+from homeassistant.helpers.entity_platform import async_add_entities
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
