@@ -8,7 +8,7 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-class EnjoyTheWoodConfigFlow(config_entries.ConfigFlow):
+class EnjoyTheWoodConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Enjoy the Wood LED Map."""
 
     async def async_step_user(self, user_input=None):
