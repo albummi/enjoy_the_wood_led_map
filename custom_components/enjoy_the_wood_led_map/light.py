@@ -1,3 +1,6 @@
+from homeassistant.components.light import LightEntity  # Korrekt importieren
+import requests
+
 class EnjoyTheWoodLedMapLight(LightEntity):
     """Representation of the Enjoy the Wood LED Map as a light entity."""
 
@@ -11,7 +14,7 @@ class EnjoyTheWoodLedMapLight(LightEntity):
     @property
     def name(self):
         """Return the name of the light."""
-        return f"Enjoy the Wood LED Map"  # Der Name der Entität
+        return "Enjoy the Wood LED Map"
 
     @property
     def is_on(self):
