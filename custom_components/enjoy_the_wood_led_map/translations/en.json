@@ -1,0 +1,15 @@
+{
+  "config_flow": {
+    "title": "Enjoy the Wood LED Map",
+    "step": {
+      "user": {
+        "data": {
+          "ip_address": "IP Address"
+        }
+      }
+    }
+  },
+  "light": {
+    "name": "Enjoy the Wood LED Map"
+  }
+}
