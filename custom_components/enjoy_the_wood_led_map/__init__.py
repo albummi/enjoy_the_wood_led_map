@@ -1,20 +1,24 @@
-import logging
-from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
-from .light import EnjoyTheWoodLedMapLight
-from .const import DOMAIN
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers import discovery
+from .light import async_setup_entry  # Importiere async_setup_entry von der light.py
 
-_LOGGER = logging.getLogger(__name__)
+DOMAIN = "enjoy_the_wood_led_map"
 
-async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEntry) -> bool:
+
+async def async_setup(hass: HomeAssistant, config: dict):
+    """Set up the Enjoy the Wood LED Map integration."""
+    # Hier kannst du globale Setup-Prozesse durchführen, wenn nötig
+    return True
+
+
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up Enjoy the Wood LED Map from a config entry."""
-    ip_address = entry.data.get("ip_address")
-    
-    # Hier könnte eine Instanziierung deiner Entität erfolgen, die die IP-Adresse benötigt
-    # Beispiel: Es könnte ein Gerät für die Steuerung des LED Maps erstellt werden
-    hass.data[DOMAIN] = EnjoyTheWoodLedMapLight(ip_address)
-    
-    # Die Entität zu Home Assistant hinzufügen
-    hass.helpers.entity_component.async_add_entities([hass.data[DOMAIN]])
+    # Hier registrierst du die Entität für die LED-Karte
+    ip_address = entry.data["ip_address"]
+    hass.data.setdefault(DOMAIN, {})
+    # Registriere die Entität als "light"
+    await async_setup_entry(hass, entry, hass.async_add_entities)
 
+    # Optional: Zusätzliche Logik für das Setup, falls benötigt
     return True
