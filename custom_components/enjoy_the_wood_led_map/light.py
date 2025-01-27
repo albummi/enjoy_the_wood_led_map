@@ -1,7 +1,7 @@
 import logging
 import aiohttp
-from homeassistant.components.light import LightEntity
-from homeassistant.const import CONF_IP_ADDRESS, ATTR_EFFECT
+from homeassistant.components.light import LightEntity, ATTR_EFFECT
+from homeassistant.const import CONF_IP_ADDRESS
 
 _LOGGER = logging.getLogger(__name__)
 
