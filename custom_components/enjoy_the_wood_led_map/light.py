@@ -1,6 +1,6 @@
 import logging
 import aiohttp
-from homeassistant.components.light import LightEntity, ATTR_EFFECT
+from homeassistant.components.light import LightEntity, SUPPORT_EFFECT
 from homeassistant.const import CONF_IP_ADDRESS
 
 _LOGGER = logging.getLogger(__name__)
@@ -36,7 +36,7 @@ class EnjoyTheWoodLedMapLight(LightEntity):
     @property
     def supported_features(self):
         """Flag supported features."""
-        return LightEntity.supported_features | ATTR_EFFECT
+        return SUPPORT_EFFECT
 
     @property
     def effect_list(self):
