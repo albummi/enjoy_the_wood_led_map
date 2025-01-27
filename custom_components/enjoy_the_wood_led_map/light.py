@@ -1,7 +1,7 @@
 import logging
 import requests
-from homeassistant.components.light import LightEntity
-from homeassistant.const import CONF_IP_ADDRESS, COLOR_MODE_RGB
+from homeassistant.components.light import LightEntity, COLOR_MODE_RGB
+from homeassistant.const import CONF_IP_ADDRESS
 from homeassistant.helpers.entity_platform import async_add_entities
 from .const import DOMAIN
 
