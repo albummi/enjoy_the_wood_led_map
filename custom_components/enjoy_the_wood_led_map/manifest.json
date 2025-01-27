@@ -1,10 +1,10 @@
 {
   "domain": "enjoy_the_wood_led_map",
   "name": "Enjoy the Wood LED Map",
-  "version": "1.0.0",
-  "documentation": "https://github.com/albummi/enjoy_the_wood_led_map",
+  "config_flow": true,
   "dependencies": [],
-  "codeowners": ["@albummi"],
+  "after_dependencies": [],
+  "codeowners": ["@your_username"],
   "requirements": [],
-  "config_flow": true
+  "version": "1.0.0"
 }
