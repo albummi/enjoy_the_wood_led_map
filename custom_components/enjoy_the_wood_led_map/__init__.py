@@ -5,6 +5,8 @@ from .light import EnjoyTheWoodLedMapLight
 from .const import DOMAIN
 from .config_flow import EnjoyTheWoodConfigFlow
 
+config_entries.HANDLERS.register(DOMAIN, EnjoyTheWoodConfigFlow)
+
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEntry) -> bool:
