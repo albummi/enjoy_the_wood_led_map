@@ -1,7 +1,7 @@
 from homeassistant import config_entries
-from homeassistant.core import callback
+import voluptuous as vol
 
-from .const import DOMAIN  # Stelle sicher, dass `DOMAIN` korrekt definiert ist
+from .const import DOMAIN  # Importiere DOMAIN aus const.py
 
 
 class EnjoyTheWoodLedMapConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -12,17 +12,13 @@ class EnjoyTheWoodLedMapConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
         if user_input is not None:
-            # Validate user input here (z. B. die IP-Adresse prüfen)
+            # Optional: Du kannst hier die IP-Adresse validieren
             return self.async_create_entry(title="Enjoy the Wood LED Map", data=user_input)
 
+        # Zeige ein Eingabeformular für den Benutzer
         return self.async_show_form(
             step_id="user",
-            data_schema=self._get_user_input_schema()
+            data_schema=vol.Schema({
+                vol.Required("ip_address"): str,  # Benutzer gibt die IP-Adresse der LED-Karte ein
+            })
         )
-
-    def _get_user_input_schema(self):
-        """Return the schema for user input."""
-        import voluptuous as vol
-        return vol.Schema({
-            vol.Required("ip_address"): str,
-        })

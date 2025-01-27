@@ -2,42 +2,44 @@ import logging
 import requests
 from homeassistant.components.light import LightEntity
 from homeassistant.const import CONF_IP_ADDRESS
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-DOMAIN = "enjoy_the_wood_led_map"
-DEFAULT_NAME = "Enjoy the Wood LED Map"
+async def async_setup_entry(hass, entry, async_add_entities):
+    """Set up the Enjoy the Wood LED map as a light entity."""
+    ip_address = entry.data[CONF_IP_ADDRESS]
+    async_add_entities([EnjoyTheWoodLedMapLight(ip_address)])
+
 
 class EnjoyTheWoodLedMapLight(LightEntity):
     """Representation of the Enjoy the Wood LED Map as a light entity."""
 
     def __init__(self, ip_address):
-        """Initialize the light."""
+        """Initialize the light entity."""
         self._ip_address = ip_address
-        self._name = DEFAULT_NAME
-        self._is_on = False
+        self._state = False
         self._effect = None
         self._color = None
 
     @property
     def name(self):
         """Return the name of the light."""
-        return self._name
+        return f"Enjoy the Wood LED Map"
 
     @property
     def is_on(self):
-        """Return if the light is on."""
-        return self._is_on
+        """Return if the LED map is on or off."""
+        return self._state
 
     @property
     def effect_list(self):
         """Return the list of available effects."""
         return [
-            "RainbowLoop", "Strobe", "theaterChase", "Sparkle", "RunningLights",
+            "RainbowLoop", "Strobe", "TheaterChase", "Sparkle", "RunningLights",
             "RainbowTwinkle", "RgbPropeller", "RandomColorPop", "PopLeftRight",
             "SinWaveBrightness", "MarchRandomColors", "VerticalSomething",
-            "PulseColorSaturation", "PulseColorBrightness", "StripFflicker",
-            "CycloneTwo", "RandomBurst"
+            "PulseColorSaturation", "PulseColorBrightness", "StripFlicker", "CycloneTwo", "RandomBurst"
         ]
 
     @property
@@ -45,39 +47,22 @@ class EnjoyTheWoodLedMapLight(LightEntity):
         """Return the current effect."""
         return self._effect
 
-    @property
-    def rgb_color(self):
-        """Return the color of the light."""
-        return self._color
-
     async def async_turn_on(self, **kwargs):
-        """Turn on the light."""
-        self._is_on = True
-        await self._send_command("on")
+        """Turn on the LED map."""
+        self._state = True
+        requests.get(f"http://{self._ip_address}/?cmd=on")
 
-        if "rgb_color" in kwargs:
-            self._color = kwargs["rgb_color"]
-            # You can add logic to convert RGB to a specific format for the LED map if needed.
-
-        if "effect" in kwargs:
-            self._effect = kwargs["effect"]
-            await self._set_effect(self._effect)
+        if EFFECT := kwargs.get("effect"):
+            self._effect = EFFECT
+            requests.get(f"http://{self._ip_address}/?cmd={self._effect}")
+        
+        if COLOR := kwargs.get("rgb_color"):
+            self._color = COLOR
+            # Handle color setting (depends on the LED map's capabilities)
 
     async def async_turn_off(self, **kwargs):
-        """Turn off the light."""
-        self._is_on = False
-        await self._send_command("off")
-
-    async def _send_command(self, command):
-        """Send a command to the LED map via HTTP."""
-        url = f"http://{self._ip_address}/?cmd={command}"
-        try:
-            response = requests.get(url)
-            _LOGGER.debug(f"Command {command} sent to {self._ip_address}: {response.status_code}")
-        except requests.RequestException as e:
-            _LOGGER.error(f"Error sending command to {self._ip_address}: {e}")
-
-    async def _set_effect(self, effect):
-        """Set the effect on the LED map."""
-        if effect in self.effect_list:
-            await self._send_command(effect)
+        """Turn off the LED map."""
+        self._state = False
+        self._effect = None
+        self._color = None
+        requests.get(f"http://{self._ip_address}/?cmd=off")

@@ -10,7 +10,6 @@ async def async_setup(hass: HomeAssistant, config: dict):
 
 async def async_setup_entry(hass: HomeAssistant, entry):
     """Set up Enjoy the Wood LED Map from a config entry."""
-    # Hier kannst du deinen Integrationsstart hinzufügen
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = entry.data
     return True
