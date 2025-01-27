@@ -2,7 +2,6 @@ import logging
 import requests
 from homeassistant.components.light import LightEntity, COLOR_MODE_RGB
 from homeassistant.const import CONF_IP_ADDRESS
-from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -10,7 +9,6 @@ async def async_setup_entry(hass, entry, async_add_entities):
     """Set up the Enjoy the Wood LED Map as a light entity."""
     ip_address = entry.data[CONF_IP_ADDRESS]
     async_add_entities([EnjoyTheWoodLedMapLight(ip_address)])
-
 
 class EnjoyTheWoodLedMapLight(LightEntity):
     """Representation of the Enjoy the Wood LED Map as a light entity."""
