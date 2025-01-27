@@ -1,33 +1,31 @@
-import logging
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import async_add_entities
-from .light import EnjoyTheWoodLedMapLight
+from homeassistant.components.light import LightEntity
 
-_LOGGER = logging.getLogger(__name__)
+class EnjoyTheWoodLedMapLight(LightEntity):
+    """Representation of Enjoy the Wood LED Map Light."""
 
-DOMAIN = "enjoy_the_wood_led_map"
+    def __init__(self, ip_address: str):
+        """Initialize the light entity."""
+        self._ip_address = ip_address
+        self._is_on = False
 
-async def async_setup(hass: HomeAssistant, config: dict):
-    """Set up the Enjoy the Wood LED Map integration."""
-    _LOGGER.info("Setting up Enjoy the Wood LED Map integration.")
-    return True
+    @property
+    def name(self):
+        """Return the name of the light."""
+        return "Enjoy the Wood LED Map"
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
-    """Set up Enjoy the Wood LED Map from a config entry."""
-    ip_address = entry.data["ip_address"]
-    _LOGGER.info("Setting up Enjoy the Wood LED Map with IP: %s", ip_address)
-    
-    # Entität erstellen und zur Home Assistant-Instanz hinzufügen
-    hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = EnjoyTheWoodLedMapLight(ip_address)
+    @property
+    def is_on(self):
+        """Return the status of the light."""
+        return self._is_on
 
-    # Entität zu Home Assistant hinzufügen
-    await async_add_entities([EnjoyTheWoodLedMapLight(ip_address)])
-    
-    return True
+    async def async_turn_on(self, **kwargs):
+        """Turn the light on."""
+        # Logik zum Einschalten des LED Maps
+        self._is_on = True
+        self.schedule_update_ha_state()
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
-    """Unload the Enjoy the Wood LED Map integration."""
-    _LOGGER.info("Unloading Enjoy the Wood LED Map integration.")
-    return True
+    async def async_turn_off(self, **kwargs):
+        """Turn the light off."""
+        # Logik zum Ausschalten des LED Maps
+        self._is_on = False
+        self.schedule_update_ha_state()
