@@ -3,7 +3,6 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_IP_ADDRESS
 from homeassistant.core import HomeAssistant
-
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)

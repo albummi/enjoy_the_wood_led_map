@@ -1,31 +1,20 @@
-from homeassistant.components.light import LightEntity
+import logging
+from homeassistant import config_entries
+from homeassistant.core import HomeAssistant
+from .light import EnjoyTheWoodLedMapLight
+from .const import DOMAIN
 
-class EnjoyTheWoodLedMapLight(LightEntity):
-    """Representation of Enjoy the Wood LED Map Light."""
+_LOGGER = logging.getLogger(__name__)
 
-    def __init__(self, ip_address: str):
-        """Initialize the light entity."""
-        self._ip_address = ip_address
-        self._is_on = False
+async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEntry) -> bool:
+    """Set up Enjoy the Wood LED Map from a config entry."""
+    ip_address = entry.data.get("ip_address")
+    
+    # Hier könnte eine Instanziierung deiner Entität erfolgen, die die IP-Adresse benötigt
+    # Beispiel: Es könnte ein Gerät für die Steuerung des LED Maps erstellt werden
+    hass.data[DOMAIN] = EnjoyTheWoodLedMapLight(ip_address)
+    
+    # Die Entität zu Home Assistant hinzufügen
+    await hass.helpers.entity_component.async_add_entities([hass.data[DOMAIN]])
 
-    @property
-    def name(self):
-        """Return the name of the light."""
-        return "Enjoy the Wood LED Map"
-
-    @property
-    def is_on(self):
-        """Return the status of the light."""
-        return self._is_on
-
-    async def async_turn_on(self, **kwargs):
-        """Turn the light on."""
-        # Logik zum Einschalten des LED Maps
-        self._is_on = True
-        self.schedule_update_ha_state()
-
-    async def async_turn_off(self, **kwargs):
-        """Turn the light off."""
-        # Logik zum Ausschalten des LED Maps
-        self._is_on = False
-        self.schedule_update_ha_state()
+    return True
