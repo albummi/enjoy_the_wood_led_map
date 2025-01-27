@@ -8,17 +8,20 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, entry, async_add_entities):
     """Set up the Enjoy the Wood LED Map as a light entity."""
     ip_address = entry.data[CONF_IP_ADDRESS]
-    async_add_entities([EnjoyTheWoodLedMapLight(ip_address)])
+    _LOGGER.debug(f"Setting up light with IP address: {ip_address}")
+    async_add_entities([EnjoyTheWoodLedMapLight(ip_address, entry.entry_id)])
 
 
 class EnjoyTheWoodLedMapLight(LightEntity):
     """Representation of the Enjoy the Wood LED Map as a light entity."""
 
-    def __init__(self, ip_address):
+    def __init__(self, ip_address, entry_id):
         """Initialize the light entity."""
         self._ip_address = ip_address
         self._state = False
         self._effect = None
+        self._attr_unique_id = entry_id  # Set unique ID for the entity
+        _LOGGER.debug(f"Initialized light with IP address: {ip_address}")
 
     @property
     def name(self):
@@ -57,8 +60,9 @@ class EnjoyTheWoodLedMapLight(LightEntity):
 
     async def async_turn_on(self, **kwargs):
         """Turn on the LED map."""
-        _LOGGER.debug("Turning on the LED map with effects")
+        _LOGGER.debug(f"Turning on the LED map with effects: {kwargs}")
         self._state = True
+
         async with aiohttp.ClientSession() as session:
             async with session.get(f"http://{self._ip_address}/?cmd=on") as response:
                 _LOGGER.debug(f"HTTP GET Response: {response.status}")
