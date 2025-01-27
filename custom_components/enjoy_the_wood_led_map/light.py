@@ -1,7 +1,8 @@
 import logging
 import aiohttp
-from homeassistant.components.light import LightEntity, COLOR_MODE_ONOFF
+from homeassistant.components.light import LightEntity
 from homeassistant.const import CONF_IP_ADDRESS
+from homeassistant.const import ColorMode
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,12 +34,12 @@ class EnjoyTheWoodLedMapLight(LightEntity):
     @property
     def supported_color_modes(self):
         """Return the list of supported color modes."""
-        return {COLOR_MODE_ONOFF}
+        return {ColorMode.ONOFF}
 
     @property
     def color_mode(self):
         """Return the current color mode."""
-        return COLOR_MODE_ONOFF
+        return ColorMode.ONOFF
 
     @property
     def effect_list(self):
