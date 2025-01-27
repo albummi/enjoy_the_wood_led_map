@@ -1,8 +1,6 @@
 import logging
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_component import async_add_entities
-from .light import EnjoyTheWoodLedMapLight
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
